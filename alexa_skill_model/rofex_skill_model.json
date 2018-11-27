@@ -1,0 +1,187 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "rofex",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": [
+                        "help",
+                        "help me"
+                    ]
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "LastPriceIntent",
+                    "slots": [
+                        {
+                            "name": "Product",
+                            "type": "PRODUCT_TYPE"
+                        },
+                        {
+                            "name": "Month",
+                            "type": "MONTH_TYPE"
+                        }
+                    ],
+                    "samples": [
+                        "show me {Product} price",
+                        "{Product}",
+                        "price {Product}",
+                        "price of {Product}",
+                        "the price of {Product}",
+                        "the price of {Product} futures",
+                        "last price {Product}",
+                        "last price of {Product}",
+                        "last price of {Product} futures",
+                        "{Product} {Month}",
+                        "{Product} {Month} contract",
+                        "price {Product} {Month}",
+                        "price {Product} {Month} contract",
+                        "price of {Product} {Month}",
+                        "price of {Product} {Month} contract",
+                        "the price of {Product} {Month}",
+                        "the price of {Product} {Month} contract",
+                        "the price of {Product} futures {Month} contract",
+                        "last price {Product} {Month}",
+                        "last price {Product} {Month} contract",
+                        "last price of {Product} {Month}",
+                        "last price of {Product} {Month} contract",
+                        "last price of {Product} futures {Month} contract"
+                    ]
+                },
+                {
+                    "name": "CloseIntent",
+                    "slots": [],
+                    "samples": [
+                        "bye",
+                        "bye Alexa",
+                        "see you",
+                        "see you later",
+                        "goodbye"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "PRODUCT_TYPE",
+                    "values": [
+                        {
+                            "id": "gold",
+                            "name": {
+                                "value": "gold"
+                            }
+                        },
+                        {
+                            "id": "soy",
+                            "name": {
+                                "value": "soy"
+                            }
+                        },
+                        {
+                            "id": "dolar",
+                            "name": {
+                                "value": "dolar"
+                            }
+                        },
+                        {
+                            "id": "wti",
+                            "name": {
+                                "value": "oil"
+                            }
+                        },
+                        {
+                            "id": "rfx20",
+                            "name": {
+                                "value": "rofex index"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "MONTH_TYPE",
+                    "values": [
+                        {
+                            "id": "12",
+                            "name": {
+                                "value": "december"
+                            }
+                        },
+                        {
+                            "id": "11",
+                            "name": {
+                                "value": "november"
+                            }
+                        },
+                        {
+                            "id": "10",
+                            "name": {
+                                "value": "october"
+                            }
+                        },
+                        {
+                            "id": "9",
+                            "name": {
+                                "value": "september"
+                            }
+                        },
+                        {
+                            "id": "8",
+                            "name": {
+                                "value": "august"
+                            }
+                        },
+                        {
+                            "id": "7",
+                            "name": {
+                                "value": "july"
+                            }
+                        },
+                        {
+                            "id": "6",
+                            "name": {
+                                "value": "june"
+                            }
+                        },
+                        {
+                            "id": "5",
+                            "name": {
+                                "value": "may"
+                            }
+                        },
+                        {
+                            "id": "4",
+                            "name": {
+                                "value": "april"
+                            }
+                        },
+                        {
+                            "id": "3",
+                            "name": {
+                                "value": "march"
+                            }
+                        },
+                        {
+                            "id": "2",
+                            "name": {
+                                "value": "february"
+                            }
+                        },
+                        {
+                            "id": "1",
+                            "name": {
+                                "value": "january"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
