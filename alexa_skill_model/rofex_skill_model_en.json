@@ -1,10 +1,10 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "rofex",
+            "invocationName": "rofex's prices",
             "intents": [
                 {
-                    "name": "AMAZON.CancelIntent",
+                    "name": "AMAZON.FallbackIntent",
                     "samples": []
                 },
                 {
@@ -13,10 +13,6 @@
                         "help",
                         "help me"
                     ]
-                },
-                {
-                    "name": "AMAZON.StopIntent",
-                    "samples": []
                 },
                 {
                     "name": "LastPriceIntent",
@@ -31,6 +27,15 @@
                         }
                     ],
                     "samples": [
+                        "the last price of {Product}",
+                        "{Product} future {Month} contract ",
+                        "{Product} future",
+                        "the last price of {Product} future",
+                        "the last price of {Product} future {Month} contract",
+                        "what is the last price of {Product} {Month} contract",
+                        "what is the last price of {Product} future",
+                        "what is the last price of {Product} {Month}",
+                        "what is the last price of {Product} ",
                         "show me {Product} price",
                         "{Product}",
                         "price {Product}",
@@ -60,12 +65,39 @@
                     "name": "CloseIntent",
                     "slots": [],
                     "samples": [
+                        "That's all",
+                        "No",
                         "bye",
                         "bye Alexa",
                         "see you",
                         "see you later",
                         "goodbye"
                     ]
+                },
+                {
+                    "name": "ProductListIntent",
+                    "slots": [],
+                    "samples": [
+                        "Instruments",
+                        "List of valid instruments",
+                        "Tell me the instruments",
+                        "What instruments are available",
+                        "which instruments do you have",
+                        "Products",
+                        "List of valid products",
+                        "Tell me the products",
+                        "What products are available",
+                        "which products do you have",
+                        "Contracts",
+                        "what contracts are available",
+                        "which contracts do you have",
+                        "List of valid contracts",
+                        "Tell me the contracts"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
                 }
             ],
             "types": [
@@ -81,13 +113,19 @@
                         {
                             "id": "soy",
                             "name": {
-                                "value": "soy"
+                                "value": "soy",
+                                "synonyms": [
+                                    "soy index"
+                                ]
                             }
                         },
                         {
                             "id": "dolar",
                             "name": {
-                                "value": "dolar"
+                                "value": "dollar",
+                                "synonyms": [
+                                    "dolar"
+                                ]
                             }
                         },
                         {
@@ -99,7 +137,10 @@
                         {
                             "id": "rfx20",
                             "name": {
-                                "value": "rofex index"
+                                "value": "rofex index",
+                                "synonyms": [
+                                    "rofex 20"
+                                ]
                             }
                         }
                     ]

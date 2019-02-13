@@ -1,34 +1,63 @@
+# -*- coding:utf8 -*-
 """
 Configuration Module
 """
 
 from connector_pmy_api.pmy_enums import Entorno
+from enum import Enum
+import os
 
 
 class Primary_API:
-    USER = ''
-    PASS = ''
-    ENVIRONMENT = Entorno.demo
+    USER = os.environ['user_pmy_api']
+    PASS = os.environ['pass_pmy_api']
+    ENVIRONMENT = Entorno.produccion
+
+
+class Language(Enum):
+    EN = 1
+    ES = 2
 
 Instrument = {
-    'soy': {'last_instrument': 'SNov18', 'last_month': 'november', 'initials': 'S'},
-    'gold': {'last_instrument': 'ORONov18', 'last_month': 'november', 'initials': 'ORO'},
-    'dolar': {'last_instrument': 'DONov18', 'last_month': 'november', 'initials': 'DO'},
-    'rfx20': {'last_instrument': 'RFX20Dic18', 'last_month': 'december', 'initials': 'RFX20'},
-    'wti': {'last_instrument': 'WTINov18', 'last_month': 'november', 'initials': 'WTI'}
+    'soy': {
+        'name': {Language.EN : 'soy', Language.ES : 'soja'},
+        'trade_months': [5, 11],
+        'initials': 'S'
+    },
+    'gold': {
+        'name': {Language.EN : 'gold', Language.ES : 'oro'},
+        'trade_months': [3, 5, 7, 9, 11],
+        'initials': 'ORO'
+    },
+    'wti': {
+        'name': {Language.EN : 'oil', Language.ES : 'petróleo'},
+        'trade_months': [3, 5, 7, 9, 11],
+        'initials': 'WTI'
+    },
+    'dolar': {
+        'name': {Language.EN : 'dollar', Language.ES : 'dólar'},
+        'trade_months': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        'initials': 'DO'
+    },
+    'rfx20': {
+        'name': {Language.EN : 'rofex index', Language.ES : 'índice rofex'},
+        'trade_months': [3, 6, 9, 12],
+        'initials': 'RFX20'
+    }
 }
 
 Month = {
-    '1': {'initials': 'Ene', 'text': 'january'},
-    '2': {'initials': 'Feb', 'text': 'february'},
-    '3': {'initials': 'Mar', 'text': 'march'},
-    '4': {'initials': 'Abr', 'text': 'april'},
-    '5': {'initials': 'May', 'text': 'may'},
-    '6': {'initials': 'Jun', 'text': 'june'},
-    '7': {'initials': 'Jul', 'text': 'july'},
-    '8': {'initials': 'Ago', 'text': 'august'},
-    '9': {'initials': 'Sep', 'text': 'september'},
-    '10': {'initials': 'Oct', 'text': 'october'},
-    '11': {'initials': 'Nov', 'text': 'november'},
-    '12': {'initials': 'Dic', 'text': 'december'},
+    '1': {'initials': 'Ene', 'text': {Language.EN : 'january', Language.ES : 'enero'}},
+    '2': {'initials': 'Feb', 'text': {Language.EN : 'february', Language.ES : 'febrero'}},
+    '3': {'initials': 'Mar', 'text': {Language.EN : 'march', Language.ES : 'marzo'}},
+    '4': {'initials': 'Abr', 'text': {Language.EN : 'april', Language.ES : 'abril'}},
+    '5': {'initials': 'May', 'text': {Language.EN : 'may', Language.ES : 'mayo'}},
+    '6': {'initials': 'Jun', 'text': {Language.EN : 'june', Language.ES : 'junio'}},
+    '7': {'initials': 'Jul', 'text': {Language.EN : 'july', Language.ES : 'julio'}},
+    '8': {'initials': 'Ago', 'text': {Language.EN : 'august', Language.ES : 'agosto'}},
+    '9': {'initials': 'Sep', 'text': {Language.EN : 'september', Language.ES : 'septiembre'}},
+    '10': {'initials': 'Oct', 'text': {Language.EN : 'october', Language.ES : 'octubre'}},
+    '11': {'initials': 'Nov', 'text': {Language.EN : 'november', Language.ES : 'noviembre'}},
+    '12': {'initials': 'Dic', 'text': {Language.EN : 'december', Language.ES : 'diciembre'}},
 }
+

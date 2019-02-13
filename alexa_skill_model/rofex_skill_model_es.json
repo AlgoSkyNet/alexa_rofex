@@ -1,0 +1,285 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "precios rofex",
+            "intents": [
+                {
+                    "name": "FallbackIntent",
+                    "slots": [],
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": [
+                        "ayuda",
+                        "que puedo hacer",
+                        "ayudame",
+                        "help"
+                    ]
+                },
+                {
+                    "name": "LastPriceIntent",
+                    "slots": [
+                        {
+                            "name": "Product",
+                            "type": "PRODUCT_TYPE"
+                        },
+                        {
+                            "name": "Month",
+                            "type": "MONTH_TYPE"
+                        }
+                    ],
+                    "samples": [
+                        "cuál es el último precio {Product}",
+                        "cuál es el último precio de {Product}",
+                        "cuál es el último precio futuro {Product}",
+                        "cuál es el último precio futuro de {Product}",
+                        "cuál es el último precio del futuro {Product}",
+                        "cuál es el último precio del futuro de {Product}",
+                        "cuál es el último precio {Product} {Month}",
+                        "cuál es el último precio de {Product} {Month}",
+                        "cuál es el último precio futuro {Product} {Month}",
+                        "cuál es el último precio futuro de {Product} {Month}",
+                        "cuál es el último precio del futuro {Product} {Month}",
+                        "cuál es el último precio del futuro de {Product} {Month}",
+                        "cuál es el último precio {Product} posición {Month}",
+                        "cuál es el último precio de {Product} posición {Month}",
+                        "cuál es el último precio futuro {Product} posición {Month}",
+                        "cuál es el último precio futuro de {Product} posición {Month}",
+                        "cuál es el último precio del futuro {Product} posición {Month}",
+                        "cuál es el último precio del futuro de {Product} posición {Month}",
+                        "último precio {Product}",
+                        "último precio de {Product}",
+                        "último precio futuro {Product}",
+                        "último precio futuro de {Product}",
+                        "último precio del futuro {Product}",
+                        "último precio del futuro de {Product}",
+                        "último precio {Product} {Month}",
+                        "último precio de {Product} {Month}",
+                        "último precio futuro {Product} {Month}",
+                        "último precio futuro de {Product} {Month}",
+                        "último precio del futuro {Product} {Month}",
+                        "último precio del futuro de {Product} {Month}",
+                        "último precio {Product} posición {Month}",
+                        "último precio de {Product} posición {Month}",
+                        "último precio futuro {Product} posición {Month}",
+                        "último precio futuro de {Product} posición {Month}",
+                        "último precio del futuro {Product} posición {Month}",
+                        "último precio del futuro de {Product} posición {Month}",
+                        "precio {Product}",
+                        "precio de {Product}",
+                        "precio futuro {Product}",
+                        "precio futuro de {Product}",
+                        "precio del futuro {Product}",
+                        "precio del futuro de {Product}",
+                        "precio {Product} {Month}",
+                        "precio de {Product} {Month}",
+                        "precio futuro {Product} {Month}",
+                        "precio futuro de {Product} {Month}",
+                        "precio del futuro {Product} {Month}",
+                        "precio del futuro de {Product} {Month}",
+                        "precio {Product} posición {Month}",
+                        "precio de {Product} posición {Month}",
+                        "precio futuro {Product} posición {Month}",
+                        "precio futuro de {Product} posición {Month}",
+                        "precio del futuro {Product} posición {Month}",
+                        "precio del futuro de {Product} posición {Month}",
+                        "{Product}",
+                        "futuro {Product}",
+                        "futuro de {Product}",
+                        "{Product} {Month}",
+                        "futuro {Product} {Month}",
+                        "futuro de {Product} {Month}",
+                        "{Product} posición {Month}",
+                        "futuro {Product} posición {Month}",
+                        "futuro de {Product} posición {Month}"
+                    ]
+                },
+                {
+                    "name": "CloseIntent",
+                    "slots": [],
+                    "samples": [
+                        "Eso es todo",
+                        "No",
+                        "Chau",
+                        "Chau Chau",
+                        "Chau Alexa",
+                        "Adios",
+                        "Adios Alexa",
+                        "Nos vemos",
+                        "Nos vemos despues",
+                        "Hasta luego"
+                    ]
+                },
+                {
+                    "name": "ProductListIntent",
+                    "slots": [],
+                    "samples": [
+                        "Instrumentos",
+                        "Instrumentos válidos",
+                        "Instrumentos disponibles",
+                        "Lista Instrumentos",
+                        "Lista de Instrumentos",
+                        "Lista de Instrumentos válidos",
+                        "Lista de Instrumentos disponibles",
+                        "Dime los Instrumentos",
+                        "Cuales son los Instrumentos disponibles",
+                        "Cuales son los Instrumentos válidos",
+                        "Qué Instrumentos tienes",
+                        "Qué Instrumentos hay",
+                        "Productos",
+                        "Productos válidos",
+                        "Productos disponibles",
+                        "Lista de Productos",
+                        "Lista de Productos válidos",
+                        "Lista de Productos disponibles",
+                        "Dime los Productos",
+                        "Cuales son los Productos disponibles",
+                        "Cuales son los Productos válidos",
+                        "Qué Productos tienes",
+                        "Qué Productos hay",
+                        "Contratos",
+                        "Contratos válidos",
+                        "Contratos disponibles",
+                        "Lista de Contratos",
+                        "Lista de Contratos válidos",
+                        "Lista de Contratos disponibles",
+                        "Dime los Contratos",
+                        "Cuales son los Contratos disponibles",
+                        "Cuales son los Contratos válidos",
+                        "Qué Contratos tienes",
+                        "Qué Contratos hay"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "PRODUCT_TYPE",
+                    "values": [
+                        {
+                            "id": "gold",
+                            "name": {
+                                "value": "oro"
+                            }
+                        },
+                        {
+                            "id": "soy",
+                            "name": {
+                                "value": "soja",
+                                "synonyms": [
+                                    "indice soja"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "dolar",
+                            "name": {
+                                "value": "dolar",
+                                "synonyms": [
+                                    "dollar"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "wti",
+                            "name": {
+                                "value": "petroleo"
+                            }
+                        },
+                        {
+                            "id": "rfx20",
+                            "name": {
+                                "value": "indice rofex",
+                                "synonyms": [
+                                    "rofex 20",
+                                    "indice rofex 20"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "MONTH_TYPE",
+                    "values": [
+                        {
+                            "id": "12",
+                            "name": {
+                                "value": "diciembre"
+                            }
+                        },
+                        {
+                            "id": "11",
+                            "name": {
+                                "value": "noviembre"
+                            }
+                        },
+                        {
+                            "id": "10",
+                            "name": {
+                                "value": "octubre"
+                            }
+                        },
+                        {
+                            "id": "9",
+                            "name": {
+                                "value": "septiembre"
+                            }
+                        },
+                        {
+                            "id": "8",
+                            "name": {
+                                "value": "agosto"
+                            }
+                        },
+                        {
+                            "id": "7",
+                            "name": {
+                                "value": "julio"
+                            }
+                        },
+                        {
+                            "id": "6",
+                            "name": {
+                                "value": "junio"
+                            }
+                        },
+                        {
+                            "id": "5",
+                            "name": {
+                                "value": "mayo"
+                            }
+                        },
+                        {
+                            "id": "4",
+                            "name": {
+                                "value": "abril"
+                            }
+                        },
+                        {
+                            "id": "3",
+                            "name": {
+                                "value": "marzo"
+                            }
+                        },
+                        {
+                            "id": "2",
+                            "name": {
+                                "value": "febrero"
+                            }
+                        },
+                        {
+                            "id": "1",
+                            "name": {
+                                "value": "enero"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
