@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import connector_pmy_api.pmy_rest_api as api
-import configuration.config as config
-import configuration.alexa_responses as responses
+import logging
 from datetime import datetime
 from bisect import bisect_left
+
 from alexa_handlers.AlexaBaseHandler import AlexaBaseHandler
+import configuration.config as config
+import connector_pmy_api.pmy_rest_api as api
+import configuration.alexa_responses as responses
 
 
 class AlexaForRFXHandler(AlexaBaseHandler):
@@ -15,21 +17,46 @@ class AlexaForRFXHandler(AlexaBaseHandler):
 
     def __init__(self):
         super(self.__class__, self).__init__()
-        self.restClient = api.RestClient(config.Primary_API.USER, config.Primary_API.PASS, config.Primary_API.ENVIRONMENT)
+        self.restClient = api.RestClient(config.PrimaryAPI.USER, config.PrimaryAPI.PASS, config.PrimaryAPI.ENVIRONMENT)
         is_login = self.restClient.login()
 
-    def on_launch(self, launch_request, session, lan):
-        return self._init_response(lan)
-
     def on_session_started(self, session_started_request, session):
-        self.logger.info("On session started:")
-        self.logger.info("on_intent requestId=" + session_started_request['requestId'] +
+        logging.debug("In on_session_started.")
+        logging.debug("on_intent requestId=" + session_started_request['requestId'] +
                          ", sessionId=" + session['sessionId'])
+
+    def on_launch(self, launch_request, session, lan):
+        logging.debug("In on_launch.")
+        return AlexaForRFXHandler._init_response(lan)
+
+    def on_language_not_supported(self, lan):
+        logging.debug("In on_language_not_supported.")
+        return AlexaForRFXHandler._language_not_supported_response(lan)
+
+    def on_session_ended(self, session_end_request, session, lan):
+        logging.debug("In on_session_ended.")
+        return AlexaForRFXHandler._end_response(lan)
+
+    def on_processing_error(self, event, context, exc, lan):
+        logging.error("In on_processing_error: " + str(exc))
+        return AlexaForRFXHandler._error_response(lan)
+
+    def on_inst_data_intent(self, lan):
+        logging.debug("In on_inst_data_intent.")
+        return AlexaForRFXHandler._inst_data_response(lan)
+
+    def on_question_intent(self, lan):
+        logging.debug("In on_question_intent.")
+        return AlexaForRFXHandler._question_response(lan)
+
+    def on_help_intent(self, intent, session, lan):
+        logging.debug("In on_help_intent.")
+        return self._help_response(intent, lan)
 
     def on_intent(self, intent_request, session, lan):
         """ Called when the user specifies an intent for this skill """
 
-        self.logger.info("on_intent requestId=" + intent_request['requestId'] +
+        logging.debug("on_intent requestId=" + intent_request['requestId'] +
                      ", sessionId=" + session['sessionId'])
 
         intent = intent_request['intent']
@@ -39,113 +66,187 @@ class AlexaForRFXHandler(AlexaBaseHandler):
 
         # Custom Intents
         if intent_name == "LastPriceIntent":
-            return self.last_price_response(intent, lan)
+            return self._last_price_response(intent, lan)
         if intent_name == "ProductListIntent":
-            return self.product_list_response(lan)
+            return self._product_list_response(lan)
         if intent_name == "CloseIntent":
             return self.on_session_ended(intent, session, lan)
+        if intent_name == "HelpIntent":
+            return self.on_help_intent(intent, session, lan)
+        if intent_name == "InstrumentDataIntent":
+            return self.on_inst_data_intent(lan)
+        if intent_name == "QuestionIntent":
+            return self.on_question_intent(lan)
 
         # Amazon Default Intents
-        if intent_name == "AMAZON.HelpIntent":
-            return self.on_help_intent(lan)
+        if intent_name == "YesNoIntent":
+            return self._yes_no_response(intent, lan)
         if intent_name == "AMAZON.FallbackIntent":
             return self._default_response(lan)
 
         return self._default_response(lan)
 
-    def on_language_not_supported(self, lan):
-        return self._language_not_supported_response(lan)
+    @staticmethod
+    def _language_not_supported_response(lan):
+        return AlexaBaseHandler._build_response(responses.LANGUAGE_NOT_SUPPORTED.format(lan))
 
-    def on_help_intent(self, lan):
-        return self._help_response(lan)
+    @staticmethod
+    def _default_response(lan):
+        return AlexaForRFXHandler._build_response(responses.DEFAULT_RESPONSE[lan])
 
-    def on_session_ended(self, session_end_request, session, lan):
-        return self._end_response(lan)
+    @staticmethod
+    def _init_response(lan):
+        return AlexaForRFXHandler._build_response(responses.INIT_RESPONSE[lan], True)
 
-    def on_processing_error(self, event, context, exc, lan):
-        self.logger.error("on_processing_error: " + str(exc))
-        return self._error_response(lan)
+    @staticmethod
+    def _end_response(lan):
+        return AlexaForRFXHandler._build_response(responses.END_RESPONSE[lan])
 
-    def _language_not_supported_response(self, lan):
-        return self._build_response(responses.LANGUAGE_NOT_SUPPORTED.format(lan))
+    @staticmethod
+    def _error_response(lan):
+        return AlexaForRFXHandler._build_response(responses.ERROR_RESPONSE[lan], True)
 
-    def _default_response(self, lan):
-        return self._build_response(responses.DEFAULT_RESPONSE[lan])
+    @staticmethod
+    def _product_list_response(lan):
+        return AlexaForRFXHandler._build_response(responses.INSTRUMENT_LIST_RESPONSE[lan], True)
 
-    def _init_response(self, lan):
-        return self._build_response(responses.INIT_RESPONSE[lan], True)
+    @staticmethod
+    def _ask_instrument_response(lan):
+        return AlexaForRFXHandler._build_response(responses.ASK_INSTRUMENT_RESPONSE[lan], True)
 
-    def _end_response(self, lan):
-        return self._build_response(responses.END_RESPONSE[lan])
+    def _help_response(self, intent, lan):
+        if AlexaForRFXHandler.keys_exists(intent, 'slots', 'Product', 'resolutions',
+                                          'resolutionsPerAuthority', 0, 'values', 0, 'value', 'id'):
+            product_id = intent['slots']['Product']['resolutions']['resolutionsPerAuthority'][0]['values'][0]['value']['id']
+            if 'related' in config.Instrument[product_id]:
+                related = []
+                for related_inst in config.Instrument[product_id]['related']:
+                    related.append(config.Instrument[related_inst]['name'][lan])
+                response = responses.HELP_RELATED_INST_RESPONSE[lan]
+                response['card_output'] = responses.HELP_RELATED_INST_RESPONSE[lan]['card_output'].format(config.Instrument[product_id]['name'][lan], ', '.join(related))
+                response['speech_output'] = responses.HELP_RELATED_INST_RESPONSE[lan]['speech_output'].format(config.Instrument[product_id]['name'][lan], ', '.join(related))
+            else:
+                response = responses.HELP_INSTRUMENT_RESPONSE[lan]
+                response['card_output'] = responses.HELP_INSTRUMENT_RESPONSE[lan]['card_output'].format(config.Instrument[product_id]['name'][lan])
+                response['speech_output'] = responses.HELP_INSTRUMENT_RESPONSE[lan]['speech_output'].format(config.Instrument[product_id]['name'][lan])
+        else:
+            response = responses.HELP_RESPONSE[lan]
 
-    def _help_response(self, lan):
-        return self._build_response(responses.HELP_RESPONSE[lan], True)
+        return AlexaBaseHandler._build_response(response, True)
 
-    def _error_response(self, lan):
-        return self._build_response(responses.ERROR_RESPONSE[lan], True)
+    @staticmethod
+    def _question_response(lan):
+        return AlexaForRFXHandler._build_response(responses.QUESTION_RESPONSE[lan], True)
 
-    def product_list_response(self, lan):
-        return self._build_response(responses.LIST_RESPONSE[lan], True)
+    @staticmethod
+    def _inst_data_response(lan):
+        return AlexaForRFXHandler._build_response(responses.ENTRY_LIST_RESPONSE[lan], True)
 
-    def last_price_response(self, intent, lan):
+    def _yes_no_response(self, intent, lan):
+        yes_no = intent['slots']['YesNo']['resolutions']['resolutionsPerAuthority'][0]['values'][0]['value']['id']
+        if yes_no == "no":
+            return AlexaForRFXHandler._build_response(responses.END_RESPONSE[lan])
+        elif yes_no == "yes":
+            return AlexaForRFXHandler._build_response(responses.ASK_INSTRUMENT_RESPONSE[lan], True)
+        else:
+            return AlexaForRFXHandler._build_response(responses.DEFAULT_RESPONSE[lan])
+
+    def _last_price_response(self, intent, lan):
 
         response = responses.LAST_PRICE_RESPONSE[lan]
 
-        if 'Product' in intent['slots'] and AlexaForRFXHandler.keys_exists(intent['slots']['Product']['resolutions']['resolutionsPerAuthority'][0], 'values'):
+        # Check Product in Slot
+        if 'Product' in intent['slots'] and AlexaForRFXHandler.keys_exists(intent['slots'], 'Product', 'resolutions', 'resolutionsPerAuthority', 0, 'values'):
 
-            self.logger.info(intent)
+            logging.debug(intent)
             product = intent['slots']['Product']['resolutions']['resolutionsPerAuthority'][0]['values'][0]['value']['id']
             product_value = intent['slots']['Product']['value']
-            self.logger.info("Product + " + str(product_value))
+            logging.info("Product + " + str(product_value))
 
-            if 'Month' in intent['slots'] and self.keys_exists(intent['slots']['Month'], 'resolutions'):
-                month = intent['slots']['Month']['resolutions']['resolutionsPerAuthority'][0]['values'][0]['value']['id']
-                instrument = self._get_instrument(product, lan, month)
-            else:
-                instrument = self._get_instrument(product, lan)
+            if product.__contains__("spot"):
 
-            self.logger.info("Instrument: " + str(instrument))
+                api_response = self.restClient.market_data(config.Instrument[product]['initials'], 'IV')
 
-            api_response = self.restClient.market_data(instrument['ticker'], 'LA,SE')
+                if api_response['marketData']['IV']:
+                    response['card_output'] = responses.LAST_PRICE_OK_RESPONSE_SPOT[lan]['card_output'].format(
+                                                                config.Instrument[product]['name'][lan],
+                                                                str(api_response['marketData']['IV']))
+                    response['speech_output'] = responses.LAST_PRICE_OK_RESPONSE_SPOT[lan]['speech_output'].format(
+                                                                config.Instrument[product]['name'][lan],
+                                                                str(api_response['marketData']['IV']))
+                    response['reprompt_text'] = responses.LAST_PRICE_OK_RESPONSE_SPOT[lan]['reprompt_text']
 
-            self.logger.info("API Response: " + str(api_response))
-
-            if api_response['status'] == 'ERROR':
-                response['card_output'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['card_output'].format(instrument['prod'], instrument['month'], config.Month[str(self.find_closest_month(product))]['text'][lan])
-                response['speech_output'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['speech_output'].format(instrument['prod'], instrument['month'], config.Month[str(self.find_closest_month(product))]['text'][lan])
-                response['reprompt_text'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['reprompt_text']
-            else:
-                last_price_response = api_response['marketData']['LA']
-                settlement_price_response = api_response['marketData']['SE']
-                if last_price_response:
-                    response['card_output'] = responses.LAST_PRICE_OK_RESPONSE[lan]['card_output'].format(
-                        instrument['prod'], instrument['month'], str(last_price_response['price']))
-                    response['speech_output'] = responses.LAST_PRICE_OK_RESPONSE[lan]['speech_output'].format(
-                        instrument['prod'], instrument['month'], str(last_price_response['price']))
-                    response['reprompt_text'] = responses.LAST_PRICE_OK_RESPONSE[lan]['reprompt_text']
-                elif settlement_price_response:
-                    response['card_output'] = responses.SETTLE_PRICE_OK_RESPONSE[lan]['card_output'].format(
-                        instrument['prod'], instrument['month'], str(settlement_price_response['price']))
-                    response['speech_output'] = responses.SETTLE_PRICE_OK_RESPONSE[lan]['speech_output'].format(
-                        instrument['prod'], instrument['month'], str(settlement_price_response['price']))
-                    response['reprompt_text'] = responses.SETTLE_PRICE_OK_RESPONSE[lan]['reprompt_text']
                 else:
                     response['card_output'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['card_output']
                     response['speech_output'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['speech_output']
                     response['reprompt_text'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['reprompt_text']
+            else:
+                if 'Month' in intent['slots'] and self.keys_exists(intent['slots']['Month'], 'resolutions'):
+                    month = intent['slots']['Month']['resolutions']['resolutionsPerAuthority'][0]['values'][0]['value']['id']
+                    instrument = self._get_instrument(product, lan, month)
+                else:
+                    instrument = self._get_instrument(product, lan)
 
-        else:
+                logging.debug("Instrument: " + str(instrument))
+
+                is_default_response = True
+                entry_symbol = config.Entries['default']['symbol']
+
+                # Check Market Data Entry
+                if AlexaForRFXHandler.keys_exists(intent['slots'], 'Entry', 'resolutions', 'resolutionsPerAuthority', 0, 'values'):
+                    entry = intent['slots']['Entry']['resolutions']['resolutionsPerAuthority'][0]['values'][0]['value']['id']
+                    is_default_response = False
+                    entry_symbol = config.Entries[entry]['symbol']
+
+                api_response = self.restClient.market_data(instrument['ticker'], entry_symbol)
+
+                if api_response['status'] == 'ERROR':
+                    response['card_output'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['card_output'].format(instrument['prod'],
+                                                                                                                            instrument['month'],
+                                                                                                                            config.Month[str(AlexaForRFXHandler.find_closest_month(product))]['text'][lan])
+                    response['speech_output'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['speech_output'].format(instrument['prod'],
+                                                                                                                                instrument['month'],
+                                                                                                                                config.Month[str(AlexaForRFXHandler.find_closest_month(product))]['text'][lan])
+                    response['reprompt_text'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['reprompt_text']
+                elif is_default_response:
+                    price = api_response['marketData']['LA'] if api_response['marketData']['LA'] else api_response['marketData']['SE']
+                    if price:
+                        response['card_output'] = responses.LAST_PRICE_OK_RESPONSE[lan]['card_output'].format(
+                            instrument['prod'], instrument['month'], str(price['price']))
+                        response['speech_output'] = responses.LAST_PRICE_OK_RESPONSE[lan]['speech_output'].format(
+                            instrument['prod'], instrument['month'], str(price['price']))
+                        response['reprompt_text'] = responses.LAST_PRICE_OK_RESPONSE[lan]['reprompt_text']
+                    else:
+                        response['card_output'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['card_output'].format(instrument['prod'],
+                                                  instrument['month'], config.Month[str(AlexaForRFXHandler.find_closest_month(product))]['text'][lan])
+                        response['speech_output'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['speech_output'].format(instrument['prod'],
+                                                    instrument['month'], config.Month[str(AlexaForRFXHandler.find_closest_month(product))]['text'][lan])
+                        response['reprompt_text'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['reprompt_text']
+                else:
+                    price = api_response['marketData'][entry_symbol]
+                    if price is not None:
+                        price = price if not isinstance(price, dict) else price[config.Entries[entry]['side']]
+                        response['card_output'] = responses.ENTRY_PRICE_OK_RESPONSE[lan]['card_output'].format(config.Entries[entry]['text'][lan],
+                            instrument['prod'], instrument['month'], str(price))
+                        response['speech_output'] = responses.ENTRY_PRICE_OK_RESPONSE[lan]['speech_output'].format(
+                            config.Entries[entry]['text'][lan], instrument['prod'], instrument['month'], str(price))
+                        response['reprompt_text'] = responses.ENTRY_PRICE_OK_RESPONSE[lan]['reprompt_text']
+                    else:
+                        response['card_output'] = responses.ENTRY_PRICE_MD_NOT_FOUND_RESPONSE[lan]['card_output'].format(config.Entries[entry]['text'][lan])
+                        response['speech_output'] = responses.ENTRY_PRICE_MD_NOT_FOUND_RESPONSE[lan]['speech_output'].format(config.Entries[entry]['text'][lan])
+                        response['reprompt_text'] = responses.ENTRY_PRICE_MD_NOT_FOUND_RESPONSE[lan]['reprompt_text']
+        else: # No Product specified
             response['card_output'] = responses.LAST_PRICE_ERROR_RESPONSE[lan]['card_output']
             response['speech_output'] = responses.LAST_PRICE_ERROR_RESPONSE[lan]['speech_output']
             response['reprompt_text'] = responses.LAST_PRICE_ERROR_RESPONSE[lan]['reprompt_text']
 
-        return self._build_response(response, True)
+        return AlexaBaseHandler._build_response(response, True)
 
     def _get_instrument(self, product_id, lan, month_id=-1):
         instrument = {"ticker": "", "month":""}
         if product_id in config.Instrument.keys():
             if month_id == -1:
-                month_id = str(self.find_closest_month(product_id))
+                month_id = str(AlexaForRFXHandler.find_closest_month(product_id))
             year = str(datetime.now().year)[2:]
             if int(month_id) < datetime.now().month:
                 year = str(datetime.now().year + 1)[2:]
@@ -153,10 +254,11 @@ class AlexaForRFXHandler(AlexaBaseHandler):
             instrument['month'] = config.Month[month_id]['text'][lan]
             instrument['prod'] = config.Instrument[product_id]['name'][lan]
         else:
-            self.logger.info("Instrument not found for product_ id " + product_id)
+            logging.debug("Instrument not found for product_ id " + product_id)
         return instrument
 
-    def find_closest_month(self, product_id):
+    @staticmethod
+    def find_closest_month(product_id):
         close = bisect_left(config.Instrument[product_id]['trade_months'], datetime.now().month)
         if close == len(config.Instrument[product_id]['trade_months']):
             close = 0
@@ -178,38 +280,8 @@ class AlexaForRFXHandler(AlexaBaseHandler):
                 _element = _element[key]
             except KeyError:
                 return False
+            except IndexError:
+                return False
+            except TypeError:
+                return False
         return True
-
-if __name__ == "__main__":
-
-    # Create
-    alexa = AlexaForRFXHandler()
-
-    response = responses.LAST_PRICE_RESPONSE
-
-    lan = config.Language.ES
-    pro = 'rfx20'
-    t_product_value = 'rofex 20'
-    month = '11'
-    alexa.logger.info("Product + " + str(t_product_value))
-
-    instrument = alexa._get_instrument(pro, lan)
-    alexa.logger.info("Instrument + " + instrument['ticker'])
-    api_response = alexa.restClient.market_data(instrument['ticker'], 'LA')
-
-    if api_response['status'] == 'ERROR':
-        response['speech_output'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['speech_output'].format(
-            instrument['prod'])
-        response['reprompt_text'] = responses.LAST_PRICE_INSTRUMENT_NOT_FOUND_RESPONSE[lan]['reprompt_text']
-    else:
-        api_response = api_response['marketData']['LA']
-        if api_response:
-            response['speech_output'] = responses.LAST_PRICE_OK_RESPONSE[lan]['speech_output'].format(instrument['prod'],
-                                                                                                    instrument['month'],
-                                                                                                    str(api_response['price']))
-            response['reprompt_text'] = responses.LAST_PRICE_OK_RESPONSE[lan]['reprompt_text']
-        else:
-            response['speech_output'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['speech_output']
-            response['reprompt_text'] = responses.LAST_PRICE_MD_NOT_FOUND_RESPONSE[lan]['reprompt_text']
-
-    print(response['speech_output'])

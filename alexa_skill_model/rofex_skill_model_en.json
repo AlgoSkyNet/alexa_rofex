@@ -1,15 +1,55 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "rofex's prices",
+            "invocationName": "rofex prices",
             "intents": [
+                {
+                    "name": "YesNoIntent",
+                    "slots": [
+                        {
+                            "name": "YesNo",
+                            "type": "YES_NO_TYPE",
+                            "samples": [
+                                "no",
+                                "yes"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "{YesNo}"
+                    ]
+                },
+                {
+                    "name": "InstrumentDataIntent",
+                    "slots": [],
+                    "samples": [
+                        "instrument data",
+                        "instruments data"
+                    ]
+                },
+                {
+                    "name": "QuestionIntent",
+                    "slots": [],
+                    "samples": [
+                        "question",
+                        "questions"
+                    ]
+                },
                 {
                     "name": "AMAZON.FallbackIntent",
                     "samples": []
                 },
                 {
-                    "name": "AMAZON.HelpIntent",
+                    "name": "HelpIntent",
+                    "slots": [
+                        {
+                            "name": "Product",
+                            "type": "PRODUCT_TYPE"
+                        }
+                    ],
                     "samples": [
+                        "{Product} help",
+                        "help {Product}",
                         "help",
                         "help me"
                     ]
@@ -24,27 +64,59 @@
                         {
                             "name": "Month",
                             "type": "MONTH_TYPE"
+                        },
+                        {
+                            "name": "Entry",
+                            "type": "ENTRY_TYPE"
                         }
                     ],
                     "samples": [
-                        "the last price of {Product}",
+                        "give me the {Entry} of {Product} future {Month} contract",
+                        "give me the {Entry} of {Product} future {Month}",
+                        "give me the {Entry} of {Product} future",
+                        "give me the {Entry} of {Product}",
+                        "for {Entry} {Product} future",
+                        "what is the {Entry} of {Product} {Month} contract",
+                        "what is the {Entry} of {Product} future",
+                        "what is the {Entry} of {Product} {Month}",
+                        "what is the {Entry} of {Product} ",
+                        "what is the {Entry} of {Product} future {Month} contract",
+                        "show me {Entry} {Product} price",
+                        "{Entry} {Product}",
+                        "{Entry} of {Product}",
+                        "the {Entry} of {Product}",
+                        "the {Entry} of {Product} futures",
+                        "{Entry} {Product} {Month}",
+                        "{Entry} {Product} {Month} contract",
+                        "{Entry} {Product} future {Month} contract ",
+                        "{Entry} of {Product} {Month}",
+                        "{Entry} of {Product} {Month} contract",
+                        "the {Entry} of {Product} future",
+                        "the {Entry} of {Product} {Month}",
+                        "the {Entry} of {Product} {Month} contract",
+                        "the {Entry} of {Product} future {Month} contract",
+                        "the {Entry} of {Product} futures {Month} contract",
+                        "give me the price of {Product} future {Month} contract",
+                        "give me the price of {Product} future {Month}",
+                        "give me the price of {Product} future",
+                        "give me the price of {Product}",
+                        "for price {Product} future",
+                        "the price of {Product}",
                         "{Product} future {Month} contract ",
                         "{Product} future",
-                        "the last price of {Product} future",
-                        "the last price of {Product} future {Month} contract",
-                        "what is the last price of {Product} {Month} contract",
-                        "what is the last price of {Product} future",
-                        "what is the last price of {Product} {Month}",
-                        "what is the last price of {Product} ",
+                        "the price of {Product} future",
+                        "the price of {Product} future {Month} contract",
+                        "what is the price of {Product} {Month} contract",
+                        "what is the price of {Product} future",
+                        "what is the price of {Product} {Month}",
+                        "what is the price of {Product} ",
+                        "what is the price of {Product} future {Month} contract",
                         "show me {Product} price",
                         "{Product}",
                         "price {Product}",
                         "price of {Product}",
                         "the price of {Product}",
                         "the price of {Product} futures",
-                        "last price {Product}",
-                        "last price of {Product}",
-                        "last price of {Product} futures",
                         "{Product} {Month}",
                         "{Product} {Month} contract",
                         "price {Product} {Month}",
@@ -53,12 +125,7 @@
                         "price of {Product} {Month} contract",
                         "the price of {Product} {Month}",
                         "the price of {Product} {Month} contract",
-                        "the price of {Product} futures {Month} contract",
-                        "last price {Product} {Month}",
-                        "last price {Product} {Month} contract",
-                        "last price of {Product} {Month}",
-                        "last price of {Product} {Month} contract",
-                        "last price of {Product} futures {Month} contract"
+                        "the price of {Product} futures {Month} contract"
                     ]
                 },
                 {
@@ -66,7 +133,6 @@
                     "slots": [],
                     "samples": [
                         "That's all",
-                        "No",
                         "bye",
                         "bye Alexa",
                         "see you",
@@ -105,9 +171,93 @@
                     "name": "PRODUCT_TYPE",
                     "values": [
                         {
-                            "id": "gold",
+                            "id": "mini_wheat",
                             "name": {
-                                "value": "gold"
+                                "value": "mini wheat",
+                                "synonyms": [
+                                    "wheat mini"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "bs_as_wheat",
+                            "name": {
+                                "value": "Buenos Aires wheat"
+                            }
+                        },
+                        {
+                            "id": "wheat",
+                            "name": {
+                                "value": "wheat",
+                                "synonyms": [
+                                    "Rosario wheat"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "chicago_corn",
+                            "name": {
+                                "value": "chicago corn",
+                                "synonyms": [
+                                    "cme corn"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "corn",
+                            "name": {
+                                "value": "corn"
+                            }
+                        },
+                        {
+                            "id": "mini_corn",
+                            "name": {
+                                "value": "mini corn",
+                                "synonyms": [
+                                    "corn mini"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "chicago_soy",
+                            "name": {
+                                "value": "chicago soy",
+                                "synonyms": [
+                                    "CME soybean",
+                                    "CME soy",
+                                    "chicago soybean"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "soy_index",
+                            "name": {
+                                "value": "soy index",
+                                "synonyms": [
+                                    "ROSAFE soybean index",
+                                    "ROSAFE soy index",
+                                    "soybean index"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "mini_soy",
+                            "name": {
+                                "value": "mini soy",
+                                "synonyms": [
+                                    "soybean mini",
+                                    "soy mini",
+                                    "mini soybean"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "factory_soy",
+                            "name": {
+                                "value": "factory soy",
+                                "synonyms": [
+                                    "factory soybean"
+                                ]
                             }
                         },
                         {
@@ -115,8 +265,29 @@
                             "name": {
                                 "value": "soy",
                                 "synonyms": [
-                                    "soy index"
+                                    "soybean"
                                 ]
+                            }
+                        },
+                        {
+                            "id": "rfx20_spot",
+                            "name": {
+                                "value": "spot rofex index",
+                                "synonyms": [
+                                    "Rofex Spot",
+                                    "Spot Rofex 20 Index",
+                                    "Spot Rofex Index",
+                                    "Rofex 20 Spot",
+                                    "Spot Rofex 20",
+                                    "Spot Rofex",
+                                    "Rofex Index Spot"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "gold",
+                            "name": {
+                                "value": "gold"
                             }
                         },
                         {
@@ -221,8 +392,128 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "YES_NO_TYPE",
+                    "values": [
+                        {
+                            "id": "yes",
+                            "name": {
+                                "value": "Yes",
+                                "synonyms": [
+                                    "you know it",
+                                    "yes please",
+                                    "I do",
+                                    "yeah",
+                                    "yep"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "no",
+                            "name": {
+                                "value": "No",
+                                "synonyms": [
+                                    "no thank you",
+                                    "no thanks",
+                                    "I don't",
+                                    "I do not",
+                                    "nope"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ENTRY_TYPE",
+                    "values": [
+                        {
+                            "id": "open_int",
+                            "name": {
+                                "value": "Open Interest"
+                            }
+                        },
+                        {
+                            "id": "nom_vol",
+                            "name": {
+                                "value": "Nominal Volume"
+                            }
+                        },
+                        {
+                            "id": "effec_vol",
+                            "name": {
+                                "value": "Effective Volume"
+                            }
+                        },
+                        {
+                            "id": "settle",
+                            "name": {
+                                "value": "Settlement Price",
+                                "synonyms": [
+                                    "Settle Price"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "last",
+                            "name": {
+                                "value": "Last Price"
+                            }
+                        }
+                    ]
                 }
             ]
-        }
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "YesNoIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "YesNo",
+                            "type": "YES_NO_TYPE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.350053147176.189245307400"
+                            },
+                            "validations": [
+                                {
+                                    "type": "hasEntityResolutionMatch",
+                                    "prompt": "Slot.Validation.350053147176.189245307400.857145936369"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Slot.Validation.350053147176.189245307400.857145936369",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Sorry, I didn't get that. Could you repeat it, please?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Sorry I didn't get that. Do you want to know other instrument?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.350053147176.189245307400",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Sorry I didn't get that. Do you want to know other instrument?"
+                    }
+                ]
+            }
+        ]
     }
 }

@@ -15,9 +15,7 @@ class AlexaBaseHandler(object):
     __metaclass__ = abc.ABCMeta
 
     def __init__(self):
-        logging.basicConfig()
-        self.logger = logging.getLogger()
-        self.logger.setLevel(logging.INFO)
+        logging.debug("init AlexaBaseHandler")
 
     @abc.abstractmethod
     def on_launch(self, launch_request, session, lan):
@@ -94,7 +92,9 @@ class AlexaBaseHandler(object):
         :param context:
         :return: response from the on_ handler
         """
-        self.logger.info("Alexa Event: " + str(event))
+
+        logging.info("Alexa Event: " + str(event))
+
         try:
             response = None
 
@@ -123,17 +123,18 @@ class AlexaBaseHandler(object):
         except Exception as exc:
             response = self.on_processing_error(event, context, exc, lan)
 
+        logging.info(response)
         return response
 
     # --------------- Helpers that build all of the responses ----------------------
-    def _build_response(self, response, ssml=False):
+    @staticmethod
+    def _build_response(response, ssml=False):
         """
         Internal helper method to build the Alexa response message
         :param response: alexa response
         :param ssml: True if response is "SSML" format
         :return: properly formatted Alexa response
         """
-        self.logger.info(response)
 
         return {
             'version': '1.0',

@@ -1,6 +1,6 @@
 <h1>ROFEX SKILL for ALEXA</h1>
 
-version : 1.1.0
+version : 1.2.0
 
 #### Intro
 

@@ -4,18 +4,25 @@
             "invocationName": "precios rofex",
             "intents": [
                 {
+                    "name": "YesNoIntent",
+                    "slots": [
+                        {
+                            "name": "YesNo",
+                            "type": "YES_NO_TYPE",
+                            "samples": [
+                                "no",
+                                "sí"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "{YesNo}"
+                    ]
+                },
+                {
                     "name": "FallbackIntent",
                     "slots": [],
                     "samples": []
-                },
-                {
-                    "name": "AMAZON.HelpIntent",
-                    "samples": [
-                        "ayuda",
-                        "que puedo hacer",
-                        "ayudame",
-                        "help"
-                    ]
                 },
                 {
                     "name": "LastPriceIntent",
@@ -27,45 +34,79 @@
                         {
                             "name": "Month",
                             "type": "MONTH_TYPE"
+                        },
+                        {
+                            "name": "Entry",
+                            "type": "ENTRY_TYPE"
                         }
                     ],
                     "samples": [
-                        "cuál es el último precio {Product}",
-                        "cuál es el último precio de {Product}",
-                        "cuál es el último precio futuro {Product}",
-                        "cuál es el último precio futuro de {Product}",
-                        "cuál es el último precio del futuro {Product}",
-                        "cuál es el último precio del futuro de {Product}",
-                        "cuál es el último precio {Product} {Month}",
-                        "cuál es el último precio de {Product} {Month}",
-                        "cuál es el último precio futuro {Product} {Month}",
-                        "cuál es el último precio futuro de {Product} {Month}",
-                        "cuál es el último precio del futuro {Product} {Month}",
-                        "cuál es el último precio del futuro de {Product} {Month}",
-                        "cuál es el último precio {Product} posición {Month}",
-                        "cuál es el último precio de {Product} posición {Month}",
-                        "cuál es el último precio futuro {Product} posición {Month}",
-                        "cuál es el último precio futuro de {Product} posición {Month}",
-                        "cuál es el último precio del futuro {Product} posición {Month}",
-                        "cuál es el último precio del futuro de {Product} posición {Month}",
-                        "último precio {Product}",
-                        "último precio de {Product}",
-                        "último precio futuro {Product}",
-                        "último precio futuro de {Product}",
-                        "último precio del futuro {Product}",
-                        "último precio del futuro de {Product}",
-                        "último precio {Product} {Month}",
-                        "último precio de {Product} {Month}",
-                        "último precio futuro {Product} {Month}",
-                        "último precio futuro de {Product} {Month}",
-                        "último precio del futuro {Product} {Month}",
-                        "último precio del futuro de {Product} {Month}",
-                        "último precio {Product} posición {Month}",
-                        "último precio de {Product} posición {Month}",
-                        "último precio futuro {Product} posición {Month}",
-                        "último precio futuro de {Product} posición {Month}",
-                        "último precio del futuro {Product} posición {Month}",
-                        "último precio del futuro de {Product} posición {Month}",
+                        "dime el {Entry} de {Product}",
+                        "dime el {Entry} de {Product} {Month}",
+                        "dime el {Entry} de {Product} posición {Month}",
+                        "dime el {Entry} del futuro de {Product}",
+                        "dime el {Entry} del futuro de {Product} {Month}",
+                        "dime el {Entry} del futuro de {Product} posición {Month}",
+                        "cuál es el {Entry} {Product}",
+                        "cuál es el {Entry} de {Product}",
+                        "cuál es el {Entry} futuro {Product}",
+                        "cuál es el {Entry} futuro de {Product}",
+                        "cuál es el {Entry} del futuro {Product}",
+                        "cuál es el {Entry} del futuro de {Product}",
+                        "cuál es el {Entry} {Product} {Month}",
+                        "cuál es el {Entry} de {Product} {Month}",
+                        "cuál es el {Entry} futuro {Product} {Month}",
+                        "cuál es el {Entry} futuro de {Product} {Month}",
+                        "cuál es el {Entry} del futuro {Product} {Month}",
+                        "cuál es el {Entry} del futuro de {Product} {Month}",
+                        "cuál es el {Entry} {Product} posición {Month}",
+                        "cuál es el {Entry} de {Product} posición {Month}",
+                        "cuál es el {Entry} futuro {Product} posición {Month}",
+                        "cuál es el {Entry} futuro de {Product} posición {Month}",
+                        "cuál es el {Entry} del futuro {Product} posición {Month}",
+                        "cuál es el {Entry} del futuro de {Product} posición {Month}",
+                        "{Entry} {Product}",
+                        "{Entry} de {Product}",
+                        "{Entry} futuro {Product}",
+                        "{Entry} futuro de {Product}",
+                        "{Entry} del futuro {Product}",
+                        "{Entry} del futuro de {Product}",
+                        "{Entry} {Product} {Month}",
+                        "{Entry} de {Product} {Month}",
+                        "{Entry} futuro {Product} {Month}",
+                        "{Entry} futuro de {Product} {Month}",
+                        "{Entry} del futuro {Product} {Month}",
+                        "{Entry} del futuro de {Product} {Month}",
+                        "{Entry} {Product} posición {Month}",
+                        "{Entry} de {Product} posición {Month}",
+                        "{Entry} futuro {Product} posición {Month}",
+                        "{Entry} futuro de {Product} posición {Month}",
+                        "{Entry} del futuro {Product} posición {Month}",
+                        "{Entry} del futuro de {Product} posición {Month}",
+                        "dime el precio de {Product}",
+                        "dime el precio de {Product} {Month}",
+                        "dime el precio de {Product} posición {Month}",
+                        "dime el precio del futuro de {Product}",
+                        "dime el precio del futuro de {Product} {Month}",
+                        "dime el precio del futuro de {Product} posición {Month}",
+                        "cuál es el precio {Product}",
+                        "cuál es el precio de {Product}",
+                        "cuál es el precio futuro {Product}",
+                        "cuál es el precio futuro de {Product}",
+                        "cuál es el precio del futuro {Product}",
+                        "cuál es el precio del futuro de {Product}",
+                        "cuál es el precio {Product} {Month}",
+                        "cuál es el precio de {Product} {Month}",
+                        "cuál es el precio futuro {Product} {Month}",
+                        "cuál es el precio futuro de {Product} {Month}",
+                        "cuál es el precio del futuro {Product} {Month}",
+                        "cuál es el precio del futuro de {Product} {Month}",
+                        "cuál es el precio {Product} posición {Month}",
+                        "cuál es el precio de {Product} posición {Month}",
+                        "cuál es el precio futuro {Product} posición {Month}",
+                        "cuál es el precio futuro de {Product} posición {Month}",
+                        "cuál es el precio del futuro {Product} posición {Month}",
+                        "cuál es el precio del futuro de {Product} posición {Month}",
                         "precio {Product}",
                         "precio de {Product}",
                         "precio futuro {Product}",
@@ -100,7 +141,6 @@
                     "slots": [],
                     "samples": [
                         "Eso es todo",
-                        "No",
                         "Chau",
                         "Chau Chau",
                         "Chau Alexa",
@@ -154,6 +194,38 @@
                 {
                     "name": "AMAZON.NavigateHomeIntent",
                     "samples": []
+                },
+                {
+                    "name": "InstrumentDataIntent",
+                    "slots": [],
+                    "samples": [
+                        "Datos Instrumentos",
+                        "Datos de Instrumentos"
+                    ]
+                },
+                {
+                    "name": "QuestionIntent",
+                    "slots": [],
+                    "samples": [
+                        "como pregunto",
+                        "preguntar"
+                    ]
+                },
+                {
+                    "name": "HelpIntent",
+                    "slots": [
+                        {
+                            "name": "Product",
+                            "type": "PRODUCT_TYPE"
+                        }
+                    ],
+                    "samples": [
+                        "que puedo hacer",
+                        "ayudame",
+                        "help",
+                        "ayuda {Product}",
+                        "{Product} ayuda"
+                    ]
                 }
             ],
             "types": [
@@ -161,18 +233,111 @@
                     "name": "PRODUCT_TYPE",
                     "values": [
                         {
-                            "id": "gold",
+                            "id": "mini_wheat",
                             "name": {
-                                "value": "oro"
+                                "value": "trigo mini",
+                                "synonyms": [
+                                    "mini trigo"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "bs_as_wheat",
+                            "name": {
+                                "value": "trigo Buenos Aires"
+                            }
+                        },
+                        {
+                            "id": "wheat",
+                            "name": {
+                                "value": "trigo",
+                                "synonyms": [
+                                    "trigo Rosario"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "chicago_corn",
+                            "name": {
+                                "value": "maiz Chicago",
+                                "synonyms": [
+                                    "maiz CME"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "mini_corn",
+                            "name": {
+                                "value": "maiz mini",
+                                "synonyms": [
+                                    "mini maiz"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "corn",
+                            "name": {
+                                "value": "maiz"
+                            }
+                        },
+                        {
+                            "id": "chicago_soy",
+                            "name": {
+                                "value": "soja Chicago",
+                                "synonyms": [
+                                    "soja CME"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "soy_index",
+                            "name": {
+                                "value": "indice soja",
+                                "synonyms": [
+                                    "indice soja ROSAFE"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "mini_soy",
+                            "name": {
+                                "value": "soja mini",
+                                "synonyms": [
+                                    "mini soja"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "factory_soy",
+                            "name": {
+                                "value": "soja fabrica"
                             }
                         },
                         {
                             "id": "soy",
                             "name": {
-                                "value": "soja",
+                                "value": "soja"
+                            }
+                        },
+                        {
+                            "id": "rfx20_spot",
+                            "name": {
+                                "value": "spot rofex",
                                 "synonyms": [
-                                    "indice soja"
+                                    "spot rofex 20",
+                                    "spot indice rofex",
+                                    "spot indice rofex 20",
+                                    "spot rofex",
+                                    "rofex 20 spot",
+                                    "rofex spot",
+                                    "indice rofex spot"
                                 ]
+                            }
+                        },
+                        {
+                            "id": "gold",
+                            "name": {
+                                "value": "oro"
                             }
                         },
                         {
@@ -278,8 +443,122 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "YES_NO_TYPE",
+                    "values": [
+                        {
+                            "id": "yes",
+                            "name": {
+                                "value": "Sí",
+                                "synonyms": [
+                                    "sip",
+                                    "si por favor",
+                                    "si quiero",
+                                    "yeah",
+                                    "yep"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "no",
+                            "name": {
+                                "value": "No",
+                                "synonyms": [
+                                    "no gracias",
+                                    "no quiero",
+                                    "nop"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ENTRY_TYPE",
+                    "values": [
+                        {
+                            "id": "open_int",
+                            "name": {
+                                "value": "interes abierto"
+                            }
+                        },
+                        {
+                            "id": "nom_vol",
+                            "name": {
+                                "value": "volumen nominal"
+                            }
+                        },
+                        {
+                            "id": "effec_vol",
+                            "name": {
+                                "value": "volumen efectivo"
+                            }
+                        },
+                        {
+                            "id": "settle",
+                            "name": {
+                                "value": "precio ajuste",
+                                "synonyms": [
+                                    "precio de ajuste"
+                                ]
+                            }
+                        },
+                        {
+                            "id": "last",
+                            "name": {
+                                "value": "ultimo precio"
+                            }
+                        }
+                    ]
                 }
             ]
-        }
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "YesNoIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "YesNo",
+                            "type": "YES_NO_TYPE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.912212136575.142893627559"
+                            },
+                            "validations": [
+                                {
+                                    "type": "hasEntityResolutionMatch",
+                                    "prompt": "Slot.Validation.912212136575.142893627559.1145604423634"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Slot.Validation.912212136575.142893627559.1145604423634",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Mmm...podrías repetirlo?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.912212136575.142893627559",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Quieres consultarme otro instrumento?"
+                    }
+                ]
+            }
+        ]
     }
 }

@@ -4,5 +4,6 @@ from enum import Enum
 
 
 class Entorno(Enum):
-    demo = 1
-    produccion = 2
+    DEMO = 1
+    PROD = 2
+    REMARKET = 3
